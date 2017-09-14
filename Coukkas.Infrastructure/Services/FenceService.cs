@@ -32,7 +32,7 @@ namespace Coukkas.Infrastructure.Services
 
         public async Task CreateAsync(Guid ID, Guid OwnerId, string Name, string Description, DateTime StartDate, DateTime EndDate, double lat, double lan, double Rad)
         {
-            await _fenceRepository.AddAsync(new Fence(Guid.NewGuid(), OwnerId, Name, Description, StartDate, EndDate, lat, lan, Rad));
+            await _fenceRepository.AddAsync(new Fence(ID, OwnerId, Name, Description, StartDate, EndDate, lat, lan, Rad));
         }
 
         public Task DeleteAsync(Guid Id)

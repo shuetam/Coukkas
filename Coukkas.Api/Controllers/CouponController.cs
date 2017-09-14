@@ -19,19 +19,33 @@ namespace Coukkas.Api.Controllers
     {
          private readonly  IUserService _userService;
         private readonly  IFenceService _fenceService;
+        private readonly  ICouponService _couponService;
 
-        public CouponController (IUserService userService, IFenceService fenceService)
+        public CouponController (IUserService userService, IFenceService fenceService, ICouponService couponService)
         {
             _userService = userService;
             _fenceService = fenceService;
+            _couponService = couponService;
         }
 
-        [HttpPut("{fenceId}")]
+        [HttpGet]
         [Authorize]
-        public async Task <IActionResult> AddCoupons(Guid fenceId, [FromBody] CouponCreated command) 
+        public async Task <IActionResult> GetCoupons()
         {
-            await _fenceService.AddCoupons(fenceId, command.Discount, command.amount, command.EndOfValidity);
-            return Created("/coupon", null);
+            var coupons = await _couponService.GetAvailableCouponsAsync(UserId);
+            if (coupons == null)
+            {
+                throw new Exception("There are no available coukkas in your vicinity.");
+            }
+            return Json(coupons);
+        }
+
+        [HttpPut("{couponIndex}")]
+        [Authorize]
+        public async Task <IActionResult> CatchCoukka(int couponIndex)
+        {
+            await _couponService.CatchCoukka(UserId, couponIndex);
+            return NoContent();
         }
     }
 }

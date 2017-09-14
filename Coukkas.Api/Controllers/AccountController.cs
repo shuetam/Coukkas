@@ -40,7 +40,6 @@ namespace Coukkas.Api.Controllers
         public async Task <IActionResult> GetUser()
         {
            return Json( await _userService.GetAccountAsync(UserId));
-           
         } 
 
         [HttpPost("location")]

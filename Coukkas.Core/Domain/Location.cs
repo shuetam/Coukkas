@@ -7,6 +7,12 @@ namespace Coukkas.Core.Domain
     {
         public double Latitude {get;  set;}
         public double Longitude {get;  set;}
+
+ public Location ()
+    {
+        
+    }
+
     public Location (double Lat, double Long)
     {
         this.Latitude = Lat;

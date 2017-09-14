@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Coukkas.Core.Domain
 {
@@ -10,6 +11,9 @@ namespace Coukkas.Core.Domain
         public string Password {get; protected set;}
         public DateTime CreatedDate {get; protected set;}
         public Location Location {get; protected set;}
+
+        private  ISet <Coupon> _coupons = new HashSet<Coupon>();
+        public IEnumerable <Coupon> Coupons {get=> _coupons;} 
 
         protected User()
         {}
@@ -27,6 +31,11 @@ namespace Coukkas.Core.Domain
         public void SetLocation(double lat, double lon)
         {   
             this.Location = new Location(lat, lon);
+        }
+
+        public void AddCatchedCoupon(Coupon coupon)
+        {
+            _coupons.Add(coupon);
         }
     }
 }

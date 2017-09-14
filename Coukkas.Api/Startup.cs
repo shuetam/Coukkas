@@ -37,12 +37,14 @@ namespace Coukkas.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            services.AddMvc()
+            .AddJsonOptions(j => j.SerializerSettings.Formatting = Formatting.Indented);
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ITokenHandler, TokenHandler>();
             services.AddScoped<IFenceRepository, FenceRepository>();
             services.AddScoped<IFenceService, FenceService>();
+            services.AddScoped<ICouponService, CouponService>();
             services.AddSingleton(AutoMapperConfig.Initialize());
           //  services. Configure<TokenParameters>(Configuration.GetSection("Jwt"));
             services.AddSingleton(Configuration.GetSection("Jwt").Get<TokenParameters>());

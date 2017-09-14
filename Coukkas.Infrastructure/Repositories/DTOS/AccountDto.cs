@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Coukkas.Infrastructure.Repositories.DTOS
 {
@@ -8,6 +9,8 @@ namespace Coukkas.Infrastructure.Repositories.DTOS
         public string Role {get;  set;}
         public string Name {get;  set;}
         public string Email {get;  set;}
+
+        public IEnumerable <CouponDto> Coupons {get; set;}
       
     }
 }

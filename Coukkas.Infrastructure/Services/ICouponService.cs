@@ -9,5 +9,6 @@ namespace Coukkas.Infrastructure.Services
     public interface ICouponService
     {
         Task <List<CouponDto>> GetAvailableCouponsAsync (Guid UserId);
+         Task CatchCoukka(Guid UserId, int couponIndex);
     }
 }

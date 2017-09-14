@@ -31,19 +31,27 @@ namespace Coukkas.Api.Controllers
         
         public async Task <IActionResult> CreateFence([FromBody] FenceCreated fence)
         {
-
+            Guid fenceID = Guid.NewGuid();
          await _fenceService.CreateAsync
-         (Guid.NewGuid(), UserId, fence.Name,fence.Description,DateTime.UtcNow, DateTime.UtcNow.AddDays(fence.Days), fence.lat, fence.lon, fence.Radius);
+         (fenceID, UserId, fence.Name,fence.Description,DateTime.UtcNow, DateTime.UtcNow.AddDays(fence.Days), fence.lat, fence.lon, fence.Radius);
 
-           return Created($"/{UserId}/fences", null);
+           return Created($"fences/{fenceID}", null);
         } 
 
-        [HttpGet("fences")]
+        [HttpGet("outfences")]
         [Authorize]
-        public async Task <IActionResult> GetAllFances()
+        public async Task <IActionResult> GetOutFances()
         {
             var fences = await _fenceService.GetNotAvailableAsync(UserId);
-            return Json(JsonConvert.SerializeObject(fences));
+            return Json(fences);
+        }
+
+        [HttpGet("infences")]
+        [Authorize]
+        public async Task <IActionResult> GetInFances()
+        {
+            var fences = await _fenceService.GetAvailableAsync(UserId);
+            return Json(fences);
         }
 
         [HttpGet("myfences")]
@@ -51,8 +59,17 @@ namespace Coukkas.Api.Controllers
         public async Task <IActionResult> GetFences()
         {   
             var fences = await _fenceService.GetByOwnerAsync(UserId);
-            return Json(JsonConvert.SerializeObject(fences));
-            
+            //return Json(JsonConvert.SerializeObject(fences, Formatting.Indented).ToString()); 
+             return Json(fences); 
+              
+        }
+
+        [HttpPost("addcoupons")]
+        [Authorize]  // dla roli company
+        public async Task <IActionResult> AddCoupons([FromBody] CouponCreated command) 
+        {
+            await _fenceService.AddCoupons(command.FenceId, command.Discount, command.amount, command.EndOfValidity);
+            return Created("/coupon", null);
         }
     }
 }

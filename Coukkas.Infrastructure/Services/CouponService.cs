@@ -25,17 +25,33 @@ namespace Coukkas.Infrastructure.Services
         {
             var user = await _userRepository.GetAsync(UserId);
             var avaibleFences = await _fenceRepository.GetAvailableAsync(user.Location);
-            // 0,00001 deegres
+          
             var coupons = new List<Coupon>();
 
             foreach(var f in avaibleFences)
             {
-                coupons.AddRange(f.Coupons.Where(c 
-                => c.location.Latitude == user.Location.Latitude 
-                    && c.location.Longitude == user.Location.Longitude));
+                coupons.AddRange(f.AvaibleCoupons.Where(c 
+                => c.location.GetDistanceTo(user.Location)<2));
+            }
+           // return coupons.Select( f => _autoMapper.Map<CouponDto>(f)).ToList();
+           return _autoMapper.Map<List<CouponDto>>(coupons);
+        }
+
+        public async Task CatchCoukka(Guid UserId, int couponIndex)
+        {
+            var user = await _userRepository.GetAsync(UserId);
+            var avaibleFences = await _fenceRepository.GetAvailableAsync(user.Location);
+          
+            var coupons = new List<Coupon>();
+
+            foreach(var f in avaibleFences)
+            {
+                coupons.AddRange(f.AvaibleCoupons.Where(c 
+                => c.location.GetDistanceTo(user.Location)<2));
             }
 
-            return coupons.Select( f => _autoMapper.Map<CouponDto>(f)).ToList();
+            var coupon = coupons[couponIndex];
+            coupon.Catch(user);
         }
     }
 }
