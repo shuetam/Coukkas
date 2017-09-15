@@ -21,7 +21,8 @@ using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using System.Text;
-
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 
 namespace Coukkas.Api
 {
@@ -33,9 +34,10 @@ namespace Coukkas.Api
         }
 
         public IConfiguration Configuration { get; }
+        public IContainer Container {get; private set;}
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddMvc()
             .AddJsonOptions(j => j.SerializerSettings.Formatting = Formatting.Indented);
@@ -51,7 +53,7 @@ namespace Coukkas.Api
             services.AddAuthorization();
             
 
-         var tokenParameters = Configuration.GetSection("Jwt").Get<TokenParameters>();
+            var tokenParameters = Configuration.GetSection("Jwt").Get<TokenParameters>();
         // var tokenParameters = new TokenParameters();
 
             services.AddAuthentication(options =>
@@ -70,10 +72,18 @@ namespace Coukkas.Api
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenParameters.SigningKey))  
             };
              });
+
+             var builder = new ContainerBuilder();
+             builder.Populate(services); // get existing services
+
+             builder.RegisterType<UserRepository>().As<IUserRepository>().InstancePerLifetimeScope(); // registers types
+             
+             Container = builder.Build();
+             return new AutofacServiceProvider(Container);
         }
      
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime appLifeTime)
         {
            
             if (env.IsDevelopment())
@@ -82,6 +92,7 @@ namespace Coukkas.Api
             }
             app.UseAuthentication();
             app.UseMvc();
+            appLifeTime.ApplicationStopped.Register(() => Container.Dispose()); // cleaning container when app stop
         }
     }
 }
