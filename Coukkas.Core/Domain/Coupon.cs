@@ -17,6 +17,7 @@ namespace Coukkas.Core.Domain
         public Location location {get; protected set;}
         public bool Caught => UserId.HasValue;
 
+        Timer timer; 
         protected Coupon()
         {}
 
@@ -27,11 +28,10 @@ namespace Coukkas.Core.Domain
             Discount = discount;
             EndOfValidity = endOfValidity;
             this.location = new Location();
-            SetLocation(fence); // in future on server
+            StartLocationSetter(fence);
         }
 
-        Timer timer;
-        private void SetLocation(Fence fence)
+        public void StartLocationSetter(Fence fence)
         {
             Random random = new Random();
             timer = new Timer();
@@ -42,13 +42,13 @@ namespace Coukkas.Core.Domain
             this.location.Longitude = LocationLottery.Invoke(fence).ToDegGeo() + fence.location.Longitude;
           };
         
-        timer.Start();
+        timer.Start(); 
         }
 
       public void Catch (User user)
       {
           this.UserId = user.Id;
-          timer.Stop();
+          timer.Stop(); // out
           user.AddCatchedCoupon(this);
       }
           

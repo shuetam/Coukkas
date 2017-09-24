@@ -23,6 +23,10 @@ using Microsoft.AspNetCore.Http;
 using System.Text;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Coukkas.Infrastructure.EntityFramework;
+using Coukkas.Infrastructure.Extensions;
+using Microsoft.EntityFrameworkCore;
+using System.Timers;
 
 namespace Coukkas.Api
 {
@@ -30,8 +34,9 @@ namespace Coukkas.Api
     {
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            Configuration = configuration; 
         }
+        
 
         public IConfiguration Configuration { get; }
         public IContainer Container {get; private set;}
@@ -48,9 +53,15 @@ namespace Coukkas.Api
             services.AddScoped<IFenceService, FenceService>();
             services.AddScoped<ICouponService, CouponService>();
             services.AddSingleton(AutoMapperConfig.Initialize());
+            
           //  services. Configure<TokenParameters>(Configuration.GetSection("Jwt"));
-            services.AddSingleton(Configuration.GetSection("Jwt").Get<TokenParameters>());
+            services.AddSingleton(Configuration.GetSection("Jwt").Get<TokenParameters>()); 
             services.AddAuthorization();
+            /* services.AddEntityFrameworkSqlServer()
+                    .AddEntityFrameworkInMemoryDatabase()
+                    .AddDbContext<CoukkasContext>(); */
+            var connectionString = Configuration.GetSection("SqlConnecting").Get<SqlConnectingSettings>().ConnectionString; 
+            services.AddDbContext<CoukkasContext>(options => options.UseSqlServer(connectionString));
             
 
             var tokenParameters = Configuration.GetSection("Jwt").Get<TokenParameters>();
@@ -76,7 +87,10 @@ namespace Coukkas.Api
              var builder = new ContainerBuilder();
              builder.Populate(services); // get existing services
 
-             builder.RegisterType<UserRepository>().As<IUserRepository>().InstancePerLifetimeScope(); // registers types
+             builder.RegisterType<UserRepository>().As<IUserRepository>().InstancePerLifetimeScope(); // register types
+             builder.RegisterInstance(Configuration.GetSettings<SqlConnectingSettings>());  // using my extension for configuration
+            
+            
              
              Container = builder.Build();
              return new AutofacServiceProvider(Container);
@@ -93,6 +107,7 @@ namespace Coukkas.Api
             app.UseAuthentication();
             app.UseMvc();
             appLifeTime.ApplicationStopped.Register(() => Container.Dispose()); // cleaning container when app stop
+
         }
     }
 }

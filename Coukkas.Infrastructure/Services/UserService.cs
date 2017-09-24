@@ -23,13 +23,7 @@ namespace Coukkas.Infrastructure.Services
 
         public async Task RegisterAsync(Guid Id, string email, string name, string password, string role)
         {
-           var user = await _userRepository.GetAsync(email); // await gdy laczy soie z repo
-           if (user != null)
-           {
-               throw new Exception("User allready exists.");
-           }
-        
-            user = new User(Id, email, name, password, role);
+            var user = new User(Id, email, name, password, role);
             await _userRepository.AddAsync(user);
         }
            
@@ -63,8 +57,10 @@ namespace Coukkas.Infrastructure.Services
 
         public async Task SetLocation(Guid UserID, double lat, double lon)
         {
-            var user = await _userRepository.GetAsync(UserID);
-            user.SetLocation(lat, lon);
+        var user =   await _userRepository.GetAsync(UserID);
+        user.SetLocation(lat,lon);
+        await _userRepository.UpdateAsync(user);
+        
         }
     }
 }

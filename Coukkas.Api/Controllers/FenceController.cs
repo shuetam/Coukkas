@@ -59,7 +59,7 @@ namespace Coukkas.Api.Controllers
         public async Task <IActionResult> GetFences()
         {   
             var fences = await _fenceService.GetByOwnerAsync(UserId);
-            //return Json(JsonConvert.SerializeObject(fences, Formatting.Indented).ToString()); 
+           
              return Json(fences); 
               
         }

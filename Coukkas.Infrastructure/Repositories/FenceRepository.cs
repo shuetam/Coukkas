@@ -4,57 +4,70 @@ using Coukkas.Core;
 using Coukkas.Core.Domain;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using Coukkas.Infrastructure.EntityFramework;
+using Microsoft.EntityFrameworkCore;
 
 namespace Coukkas.Infrastructure
 {
     public class FenceRepository : IFenceRepository
     {
         public static readonly ISet<Fence> _fences = new HashSet<Fence> ();
+        private readonly CoukkasContext _context;
 
+        public FenceRepository(CoukkasContext context)
+        {
+            _context = context;
+        }
         public async Task AddAsync(Fence fence)
         {
-            _fences.Add(fence);
-            await Task.CompletedTask;
+            await  _context.Fences.AddAsync(fence);
+           await _context.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(Fence fence)
         {
-            _fences.Remove(fence);
-            await Task.CompletedTask;
+            _context.Fences.Remove(fence);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<Fence> GetAsync(Guid FenceId)
-        {
-            return await Task.FromResult(_fences.SingleOrDefault(f => f.Id == FenceId));
-        }
+        =>   await _context.Fences
+            .Include(x=>x.Coupons).ThenInclude(v => v.location)
+            .Include(x=>x.location)
+            .SingleOrDefaultAsync(f => f.Id == FenceId);
 
-       public async Task <IEnumerable<Fence>> GetAsync(string FenceName)
+        public async Task UpdateAllAsync()
         {
-            return await Task.FromResult(_fences.Where
-            (f => f.Name.ToLowerInvariant().Contains(FenceName.ToLowerInvariant())));
+            var fences =  await _context.Fences
+            .Include(x=>x.Coupons).ThenInclude(v => v.location)
+            .Include(x=>x.location).Where(x=>x.Coupons.Count>0).ToListAsync();
+            foreach(var f in fences)
+            {
+                await UpdateAsync(f);
+            }
         }
 
         public async Task<Dictionary<string, double>> GetNotAvailableAsync (Location location) 
         {
-        return await Task.FromResult(_fences.Where
-        (f => f.Radius<location.GetDistanceTo(f.location)).ToDictionary
-        (f=>f.Name,f=>f.location.GetDistanceTo(location)));
+        return await _context.Fences.Include(x=>x.Coupons).Where
+        (f => f.Radius<location.GetDistanceTo(f.location)).ToDictionaryAsync
+        (f=>f.Name,f=>f.location.GetDistanceTo(location));
         }
          
          public async Task<List<Fence>> GetAvailableAsync (Location location) 
         {
-        return await Task.FromResult(_fences.Where
-        (f => f.Radius>=location.GetDistanceTo(f.location)).ToList());
+        return await _context.Fences.Include(x=>x.Coupons).Where
+        (f => f.Radius>=location.GetDistanceTo(f.location)).ToListAsync();
         }    
         
         public async Task UpdateAsync(Fence fence)
         {
-         await  Task.CompletedTask;
+            _context.Update(fence);
+            await _context.SaveChangesAsync();
         }
         public async Task <IEnumerable<Fence>> GetAsyncByOwner(Guid OwnerId)
-        {
-            return await  Task.FromResult( _fences.Where(f => f.OwnerID == OwnerId));
-        }
+            => await _context.Fences.Include(x=>x.Coupons).Where(f => f.OwnerID == OwnerId).ToListAsync();
+        
+        
     }
 }

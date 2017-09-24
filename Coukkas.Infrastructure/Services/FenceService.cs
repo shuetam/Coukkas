@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Timers;
 using AutoMapper;
 using Coukkas.Core;
 using Coukkas.Core.Domain;
@@ -22,12 +23,14 @@ namespace Coukkas.Infrastructure.Services
             _autoMapper = autoMapper;
         }
 
+       
 
         public async Task AddCoupons(Guid FenceId, double discount, int amount, DateTime end)
         {
             var fence = await _fenceRepository.GetAsync(FenceId);
             fence.AddCoupons(amount, discount, end);
             await _fenceRepository.UpdateAsync(fence);
+            
         }
 
         public async Task CreateAsync(Guid ID, Guid OwnerId, string Name, string Description, DateTime StartDate, DateTime EndDate, double lat, double lan, double Rad)
@@ -35,9 +38,10 @@ namespace Coukkas.Infrastructure.Services
             await _fenceRepository.AddAsync(new Fence(ID, OwnerId, Name, Description, StartDate, EndDate, lat, lan, Rad));
         }
 
-        public Task DeleteAsync(Guid Id)
+        public async Task DeleteAsync(Guid Id)
         {
-            throw new NotImplementedException();
+            var fence = await _fenceRepository.GetAsync(Id);
+            await _fenceRepository.DeleteAsync(fence);
         }
 
         public  async Task<FenceDto> GetAsync(Guid Id)

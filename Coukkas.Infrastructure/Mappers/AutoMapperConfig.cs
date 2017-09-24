@@ -16,7 +16,7 @@ namespace Coukkas.Infrastructure.Mappers
                 config =>
                 {
                 config.CreateMap<Fence, FenceDto>()
-                .ForMember(f => f.AvaibleCouponsCount, m => m.MapFrom(p => p.AvaibleCoupons.Count()));
+                .ForMember(f => f.AvaibleCouponsCount, m => m.MapFrom(p => p.Coupons.Where(x=>!x.Caught).Count()));
                 config.CreateMap<User, AccountDto>();
                 config.CreateMap<Coupon, CouponDto>();
                 }

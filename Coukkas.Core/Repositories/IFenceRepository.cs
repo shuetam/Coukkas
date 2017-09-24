@@ -9,12 +9,12 @@ namespace Coukkas.Core
     {
        Task <Fence> GetAsync(Guid FenceId);
        Task <IEnumerable<Fence>> GetAsyncByOwner (Guid OwnerId);
-       Task <IEnumerable<Fence>> GetAsync(string FenceName);
        Task<List<Fence>> GetAvailableAsync (Location location);
        Task<Dictionary<string, double>> GetNotAvailableAsync (Location location);
        Task AddAsync (Fence fence);
        Task DeleteAsync (Fence fence);
        Task UpdateAsync (Fence fence);
+       Task UpdateAllAsync();
     }
 }
     

@@ -12,7 +12,8 @@ namespace Coukkas.Core
         Task AddAsync (User user);
         Task DeleteAsync (User user);
         Task UpdateAsync (User user);
-        
+       // Task SetLocationAsync (Location location);
+      //  Task <Location> GetLocationAsync (Guid UserID);
     }
 }
 
