@@ -11,13 +11,14 @@ namespace Coukkas.Core.Domain
     {
         
         public Guid FenceId { get; protected set;}
+        public Fence Fence { get; set;}
         public double Discount {get; protected set;}
         public DateTime EndOfValidity {get; protected set;}
         public Guid? UserId {get; protected set;}
         public Location location {get; protected set;}
         public bool Caught => UserId.HasValue;
 
-        Timer timer; 
+       
         protected Coupon()
         {}
 
@@ -27,28 +28,21 @@ namespace Coukkas.Core.Domain
             FenceId = fence.Id;
             Discount = discount;
             EndOfValidity = endOfValidity;
-            this.location = new Location();
-            StartLocationSetter(fence);
+            Fence = fence;
+            this.location = new Location(34,34);
         }
+            
 
-        public void StartLocationSetter(Fence fence)
+        public void ChangeCouponLocation()
         {
             Random random = new Random();
-            timer = new Timer();
-            timer.Interval= TimeSpan.FromMinutes(1).TotalMilliseconds;
-            timer.Elapsed += (sender, e) => 
-          {
-            this.location.Latitude = LocationLottery.Invoke(fence).ToDegGeo() + fence.location.Latitude;
-            this.location.Longitude = LocationLottery.Invoke(fence).ToDegGeo() + fence.location.Longitude;
-          };
-        
-        timer.Start(); 
+            this.location.Latitude = LocationLottery.Invoke(Fence).ToDegGeo() + Fence.location.Latitude;
+            this.location.Longitude = LocationLottery.Invoke(Fence).ToDegGeo() + Fence.location.Longitude;
         }
 
       public void Catch (User user)
       {
           this.UserId = user.Id;
-          timer.Stop(); // out
           user.AddCatchedCoupon(this);
       }
           
@@ -61,8 +55,6 @@ namespace Coukkas.Core.Domain
         {return ran.NextDouble()*f.Radius;}
         else
         {return ran.NextDouble()*f.Radius * (-1);}
-      };
-
-        
+      };  
     }
 }

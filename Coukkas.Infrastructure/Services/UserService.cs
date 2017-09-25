@@ -6,19 +6,23 @@ using Coukkas.Core.Domain;
 using Coukkas.Core;
 using AutoMapper;
 using Coukkas.Infrastructure.FromBodyCommands;
+using System.Timers;
 
 namespace Coukkas.Infrastructure.Services
 {
     public class UserService : IUserService
     {
       private readonly IUserRepository _userRepository;
+     private readonly IFenceRepository _fenceRepository;
       private readonly IMapper _autoMapper;
       private readonly ITokenHandler _tokenHandler;
-            public UserService(IUserRepository userrepository, IMapper autoMapper, ITokenHandler tokenHandler)
+    public Timer timer;
+            public UserService(IUserRepository userrepository, IMapper autoMapper, ITokenHandler tokenHandler, IFenceRepository fenceRepository)
             {
                 _userRepository = userrepository;
                 _autoMapper = autoMapper;
                 _tokenHandler = tokenHandler;
+                _fenceRepository = fenceRepository;
             }
 
         public async Task RegisterAsync(Guid Id, string email, string name, string password, string role)
@@ -30,6 +34,15 @@ namespace Coukkas.Infrastructure.Services
         public async Task<TokenDto> LoginAsync(string email, string password)
         {
             var user = await _userRepository.GetAsync(email);
+        
+
+         ///////////////////////////////////////////////////////////////////////////
+           timer = new Timer();
+          timer.Interval = TimeSpan.FromMinutes(0.1).TotalMilliseconds;      
+            timer.Elapsed += async (sender, e) =>
+            await _fenceRepository.ChangeCouponsLocationsAsync(); 
+            timer.Start();
+        ///////////////////////////////////////////////////////////////////////////
 
             if (user == null)
             {

@@ -33,10 +33,6 @@ namespace Coukkas.Infrastructure.EntityFramework
             optionsBuilder.UseSqlServer(_sqlSettings.ConnectionString);
         }
 
-        /*  protected override void OnModelCreating(ModelBuilder modelBuilder)
-        { 
-            modelBuilder.Entity<Fence>().HasMany(x => x.Coupons).WithOne(c => c.Fence);
-        }   */
            
            
            

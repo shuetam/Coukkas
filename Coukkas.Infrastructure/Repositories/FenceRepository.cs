@@ -11,7 +11,7 @@ namespace Coukkas.Infrastructure
 {
     public class FenceRepository : IFenceRepository
     {
-        public static readonly ISet<Fence> _fences = new HashSet<Fence> ();
+      
         private readonly CoukkasContext _context;
 
         public FenceRepository(CoukkasContext context)
@@ -67,7 +67,25 @@ namespace Coukkas.Infrastructure
         }
         public async Task <IEnumerable<Fence>> GetAsyncByOwner(Guid OwnerId)
             => await _context.Fences.Include(x=>x.Coupons).Where(f => f.OwnerID == OwnerId).ToListAsync();
-        
+
+      
+            public async Task ChangeCouponsLocationsAsync()
+            {
+               
+            var coupons = await  _context.Coupons
+            .Include(x=>x.location)
+            .Include(x=>x.Fence).ThenInclude(f=>f.location)   
+            .Where(c => c.UserId==null).ToListAsync();
+
+            foreach(var coupon in coupons)
+            {
+                coupon.ChangeCouponLocation();
+                _context.Update(coupon);
+            }
+                await _context.SaveChangesAsync();
+                
+            }
+            
         
     }
 }

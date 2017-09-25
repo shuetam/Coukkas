@@ -15,6 +15,7 @@ namespace Coukkas.Core
        Task DeleteAsync (Fence fence);
        Task UpdateAsync (Fence fence);
        Task UpdateAllAsync();
+       Task ChangeCouponsLocationsAsync();
     }
 }
     

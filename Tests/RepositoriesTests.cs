@@ -28,7 +28,7 @@ namespace Tests
         public async Task fence_repository_should_return_list_of_fences_by_location()
         {
             // Arrange
-            IFenceRepository fencerepository = new FenceRepository();
+          //  IFenceRepository fencerepository = new FenceRepository();
             var fence1 = new Fence(Guid.NewGuid(), Guid.NewGuid(),"fence1","description1", DateTime.UtcNow,DateTime.UtcNow.AddDays(2),3,3,3);
             var fence2 = new Fence(Guid.NewGuid(), Guid.NewGuid(),"fence2","description2", DateTime.UtcNow,DateTime.UtcNow.AddDays(2),3,3,3);
             await fencerepository.AddAsync(fence1);

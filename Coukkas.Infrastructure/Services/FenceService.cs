@@ -16,6 +16,8 @@ namespace Coukkas.Infrastructure.Services
         private readonly IFenceRepository _fenceRepository;
         private readonly IMapper _autoMapper;
         private readonly IUserRepository _userRepository;
+
+    
         public FenceService (IFenceRepository fenceRepository,  IUserRepository userRepository, IMapper autoMapper)
         {
             _fenceRepository = fenceRepository;
@@ -23,14 +25,13 @@ namespace Coukkas.Infrastructure.Services
             _autoMapper = autoMapper;
         }
 
-       
-
         public async Task AddCoupons(Guid FenceId, double discount, int amount, DateTime end)
         {
             var fence = await _fenceRepository.GetAsync(FenceId);
             fence.AddCoupons(amount, discount, end);
-            await _fenceRepository.UpdateAsync(fence);
-            
+            await _fenceRepository.UpdateAsync(fence); 
+
+
         }
 
         public async Task CreateAsync(Guid ID, Guid OwnerId, string Name, string Description, DateTime StartDate, DateTime EndDate, double lat, double lan, double Rad)

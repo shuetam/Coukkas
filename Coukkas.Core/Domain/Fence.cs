@@ -16,12 +16,7 @@ namespace Coukkas.Core.Domain
         public double Radius {get; protected set;}
         public Guid OwnerID {get; protected set;}
         
-       // private  ISet <Coupon> _coupons = new HashSet<Coupon>();
-        
         public List<Coupon> Coupons {get; protected set;}
-         
-         
-       
          
         protected Fence()
         {}

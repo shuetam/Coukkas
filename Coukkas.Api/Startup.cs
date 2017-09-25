@@ -28,6 +28,9 @@ using Coukkas.Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System.Timers;
 
+// "ConnectionString": "Server=MATEUSZ-PC; User Id=Mateusz1;Password=mateusz1;Database=dydaktyka",
+// "ConnectionString": "Server=localhost; User Id=sa;Password=P@$$w0rd;Database=CoukkasDatabase",
+
 namespace Coukkas.Api
 {
     public class Startup
@@ -54,18 +57,16 @@ namespace Coukkas.Api
             services.AddScoped<ICouponService, CouponService>();
             services.AddSingleton(AutoMapperConfig.Initialize());
             
-          //  services. Configure<TokenParameters>(Configuration.GetSection("Jwt"));
+        
             services.AddSingleton(Configuration.GetSection("Jwt").Get<TokenParameters>()); 
             services.AddAuthorization();
-            /* services.AddEntityFrameworkSqlServer()
-                    .AddEntityFrameworkInMemoryDatabase()
-                    .AddDbContext<CoukkasContext>(); */
+           
             var connectionString = Configuration.GetSection("SqlConnecting").Get<SqlConnectingSettings>().ConnectionString; 
             services.AddDbContext<CoukkasContext>(options => options.UseSqlServer(connectionString));
             
 
             var tokenParameters = Configuration.GetSection("Jwt").Get<TokenParameters>();
-        // var tokenParameters = new TokenParameters();
+        
 
             services.AddAuthentication(options =>
              {
@@ -76,10 +77,10 @@ namespace Coukkas.Api
                 options.RequireHttpsMetadata = false;
                 options.TokenValidationParameters = new TokenValidationParameters()
             {
-                  //  ValidIssuer = tokenParameters.Value.Issuer,
+                  
                     ValidIssuer = tokenParameters.Issuer,
                     ValidateAudience = false,
-                   // IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenParameters.Value.SigningKey))
+                
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenParameters.SigningKey))  
             };
              });

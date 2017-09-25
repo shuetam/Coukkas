@@ -11,7 +11,6 @@ use master
 
 USE CoukkasDatabase
 
-use dydaktyka
 
 
 CREATE TABLE Users

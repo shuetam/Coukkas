@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Timers;
+using System.Threading.Tasks;
 using AutoMapper;
 using Coukkas.Core;
 using Coukkas.Core.Domain;
@@ -15,23 +15,14 @@ namespace Coukkas.Infrastructure.Services
         private readonly IUserRepository _userRepository;
         private readonly IFenceRepository _fenceRepository;
         private readonly IMapper _autoMapper;
+      
         public CouponService( IFenceRepository fenceRepository, IUserRepository userRepository, IMapper autoMapper)
         {
             _fenceRepository = fenceRepository;
             _userRepository = userRepository;
             _autoMapper = autoMapper;
 
-            var timer = new Timer();
-            timer.Interval = TimeSpan.FromMinutes(1).TotalMilliseconds;
-                   
-           timer.Elapsed += (sender, e) =>
-          {
-
-             _fenceRepository.UpdateAllAsync();
-          };
-
-            timer.Start();
-            
+             
         }
 
         public async Task <List<CouponDto>> GetAvailableCouponsAsync(Guid UserId)
