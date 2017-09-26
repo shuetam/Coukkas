@@ -87,6 +87,7 @@ REFERENCES Fences(ID)
 
 
 
+----------------------------------------------------------------
 
 SELECT * FROM Fences
 
@@ -95,6 +96,23 @@ SELECT * FROM Users
 select * from locations
 
 SELECT * FROM Coupons
+
+-----------------------------------------------------------------------
+
+
+TWO CLASS: FENCESQL AND COUPONSQL
+
+
+--  create list of object fences with ID, Radius, Long, Lat
+select Fences.ID, Radius, Latitude, Longitude from Fences Join Locations 
+on Fences.LocationID = Locations.ID
+
+-- create list of object coupons with fenceID Latitude and longitute
+select Coupons.ID, FenceID, Latitude, Longitude from Coupons
+join Locations on Coupons.LocationID = Locations.ID
+
+-- AFTER TAT I WILL UPDATE TABLE CUPONS WHERE ID = COUPONSQL.ID
+
 
 
 -----------------------------------------------------------------------
