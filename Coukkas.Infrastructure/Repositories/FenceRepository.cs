@@ -49,14 +49,14 @@ namespace Coukkas.Infrastructure
 
         public async Task<Dictionary<string, double>> GetNotAvailableAsync (Location location) 
         {
-        return await _context.Fences.Include(x=>x.Coupons).Where
+        return await _context.Fences.Where
         (f => f.Radius<location.GetDistanceTo(f.location)).ToDictionaryAsync
         (f=>f.Name,f=>f.location.GetDistanceTo(location));
         }
          
          public async Task<List<Fence>> GetAvailableAsync (Location location) 
         {
-        return await _context.Fences.Include(x=>x.Coupons).Where
+        return await _context.Fences.Include(x=>x.Coupons).ThenInclude(z=>z.location).Where
         (f => f.Radius>=location.GetDistanceTo(f.location)).ToListAsync();
         }    
         
@@ -69,23 +69,7 @@ namespace Coukkas.Infrastructure
             => await _context.Fences.Include(x=>x.Coupons).Where(f => f.OwnerID == OwnerId).ToListAsync();
 
       
-            public async Task ChangeCouponsLocationsAsync()
-            {
-               
-            var coupons = await  _context.Coupons
-            .Include(x=>x.location)
-            .Include(x=>x.Fence).ThenInclude(f=>f.location)   
-            .Where(c => c.UserId==null).ToListAsync();
-
-            foreach(var coupon in coupons)
-            {
-                coupon.ChangeCouponLocation();
-                _context.Update(coupon);
-            }
-                await _context.SaveChangesAsync();
-                
-            }
-            
+           
         
     }
 }

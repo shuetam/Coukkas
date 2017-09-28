@@ -24,7 +24,7 @@ namespace Coukkas.Core.Domain
 
         public Coupon(Guid id,  Fence fence, double discount, DateTime endOfValidity)
         {
-          this.Id = id;
+            this.Id = id;
             FenceId = fence.Id;
             Discount = discount;
             EndOfValidity = endOfValidity;

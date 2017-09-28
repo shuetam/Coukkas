@@ -35,6 +35,7 @@ namespace Coukkas.Api
 {
     public class Startup
     {
+        Timer timer;
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration; 
@@ -84,6 +85,14 @@ namespace Coukkas.Api
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenParameters.SigningKey))  
             };
              });
+
+                var databaseConnect = new DataBaseConnect();
+                timer = new Timer();
+                timer.Interval = TimeSpan.FromMinutes(10).TotalMilliseconds;      
+                timer.Elapsed +=  (sender, e) =>
+                databaseConnect.ConnectAndChangeCouponsLocations(); 
+                timer.Start(); 
+
 
              var builder = new ContainerBuilder();
              builder.Populate(services); // get existing services

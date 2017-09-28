@@ -16,7 +16,7 @@ namespace Coukkas.Infrastructure.Services
      private readonly IFenceRepository _fenceRepository;
       private readonly IMapper _autoMapper;
       private readonly ITokenHandler _tokenHandler;
-    public Timer timer;
+   // public Timer timer;
             public UserService(IUserRepository userrepository, IMapper autoMapper, ITokenHandler tokenHandler, IFenceRepository fenceRepository)
             {
                 _userRepository = userrepository;
@@ -36,13 +36,6 @@ namespace Coukkas.Infrastructure.Services
             var user = await _userRepository.GetAsync(email);
         
 
-         ///////////////////////////////////////////////////////////////////////////
-           timer = new Timer();
-          timer.Interval = TimeSpan.FromMinutes(0.1).TotalMilliseconds;      
-            timer.Elapsed += async (sender, e) =>
-            await _fenceRepository.ChangeCouponsLocationsAsync(); 
-            timer.Start();
-        ///////////////////////////////////////////////////////////////////////////
 
             if (user == null)
             {

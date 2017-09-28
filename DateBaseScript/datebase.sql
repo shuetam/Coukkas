@@ -5,7 +5,7 @@
 
 CREATE DATABASE CoukkasDatabase
 
-DROP DATABASE CoukkasDatabase
+----------DROP DATABASE CoukkasDatabase
 
 use master
 
@@ -52,7 +52,7 @@ EndDate DATE NULL,
 )
 
 ALTER TABLE Fences ADD CONSTRAINT 
-FK_LocationID FOREIGN KEY (LocationID) 
+FK_Location FOREIGN KEY (LocationID) 
 REFERENCES Locations(ID)
 
 ALTER TABLE Fences ADD CONSTRAINT 
@@ -71,7 +71,7 @@ LocationID  INT  NULL,
 )
 
 ALTER TABLE Coupons ADD CONSTRAINT 
-FK_Location FOREIGN KEY (LocationID) 
+FK_LocationCou FOREIGN KEY (LocationID) 
 REFERENCES Locations(ID)
 
 ALTER TABLE Coupons ADD CONSTRAINT 
@@ -97,27 +97,34 @@ select * from locations
 
 SELECT * FROM Coupons
 
+select * from Fences join Users on Fences.OwnerID = Users.ID
+
 -----------------------------------------------------------------------
 
 
-TWO CLASS: FENCESQL AND COUPONSQL
 
 
---  create list of object fences with ID, Radius, Long, Lat
+
+
 select Fences.ID, Radius, Latitude, Longitude from Fences Join Locations 
 on Fences.LocationID = Locations.ID
 
--- create list of object coupons with fenceID Latitude and longitute
-select Coupons.ID, FenceID, Latitude, Longitude from Coupons
-join Locations on Coupons.LocationID = Locations.ID
 
--- AFTER TAT I WILL UPDATE TABLE CUPONS WHERE ID = COUPONSQL.ID
+select Coupons.ID, FenceID, Locations.ID as LocationID, Latitude, Longitude from Coupons
+join Locations on Coupons.LocationID = Locations.ID WHERE COUPONS.UserID is NULL
+
+
+
+
+
 
 
 
 -----------------------------------------------------------------------
 
 
+update Locations
+set Latitude=34, Longitude=43 where id>1
 
 
 

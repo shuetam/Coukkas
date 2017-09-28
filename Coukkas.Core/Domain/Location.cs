@@ -21,7 +21,7 @@ public Location()
     public double GetDistanceTo(Location location2) // in meters
     {
             var R = 6378137;
-           try{
+          
             double lat1=this.Latitude.Value;
             double long1=this.Longitude.Value;
 
@@ -36,11 +36,7 @@ public Location()
             var c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
             var d = R * c;
             return d;
-            }
-            catch(NullReferenceException)
-            {
-                return 0; 
-            }
+                
     }
 
     }
