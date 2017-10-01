@@ -38,7 +38,7 @@ namespace Coukkas.Core.Domain
         {
             for(int i = 0;i<amount;i++)
             {
-                Coupons.Add(new Coupon(Guid.NewGuid(), this, discount, end));
+                Coupons.Add(new Coupon(Guid.NewGuid(), this.Id, discount, end,this));
             }
         }
 

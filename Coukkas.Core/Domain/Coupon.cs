@@ -11,7 +11,7 @@ namespace Coukkas.Core.Domain
     {
         
         public Guid FenceId { get; protected set;}
-        public Fence Fence { get; set;}
+       // public Fence Fence { get; set;}
         public double Discount {get; protected set;}
         public DateTime EndOfValidity {get; protected set;}
         public Guid? UserId {get; protected set;}
@@ -22,23 +22,23 @@ namespace Coukkas.Core.Domain
         protected Coupon()
         {}
 
-        public Coupon(Guid id,  Fence fence, double discount, DateTime endOfValidity)
+        public Coupon(Guid id,  Guid fenceID, double discount, DateTime endOfValidity, Fence fence)
         {
             this.Id = id;
-            FenceId = fence.Id;
+            FenceId = fenceID;
             Discount = discount;
             EndOfValidity = endOfValidity;
-            Fence = fence;
-            this.location = new Location(34,34);
+           // Fence = fence;
+            this.location = new Location(fence.location.Latitude.Value,fence.location.Longitude.Value);
         }
             
 
-        public void ChangeCouponLocation()
+       /*  public void ChangeCouponLocation()
         {
             Random random = new Random();
             this.location.Latitude = LocationLottery.Invoke(Fence).ToDegGeo() + Fence.location.Latitude;
             this.location.Longitude = LocationLottery.Invoke(Fence).ToDegGeo() + Fence.location.Longitude;
-        }
+        } */
 
       public void Catch (User user)
       {
@@ -47,7 +47,7 @@ namespace Coukkas.Core.Domain
       }
           
   
-      private Func <Fence, double> LocationLottery = (f) => 
+     /*  private Func <Fence, double> LocationLottery = (f) => 
       {
         Random ran = new Random();
         int w = ran.Next(0,2);
@@ -55,6 +55,6 @@ namespace Coukkas.Core.Domain
         {return ran.NextDouble()*f.Radius;}
         else
         {return ran.NextDouble()*f.Radius * (-1);}
-      };  
+      };  */ 
     }
 }

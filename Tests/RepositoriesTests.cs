@@ -10,7 +10,7 @@ namespace Tests
 {
     public class RepositoriesTests
     {
-        [Fact]
+        /* [Fact]
         public async Task get_user_by_ID_after_register()
         {
             // Arrange
@@ -39,6 +39,6 @@ namespace Tests
             
             //Assert
             fences.Should().HaveCount(2); 
-        }
+        } */
     }
 }

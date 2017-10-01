@@ -15,7 +15,6 @@ namespace Coukkas.Infrastructure.Services
         Task<List<Fence>> GetByOwnerAsync (Guid OwnerId);
         
         Task AddCoupons (Guid FenceId, double discount, int amount, DateTime end);
-
         Task<Dictionary<string, double>> GetNotAvailableAsync (Guid UserId);
         Task DeleteAsync(Guid Id);
     }

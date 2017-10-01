@@ -88,7 +88,7 @@ namespace Coukkas.Api
 
                 var databaseConnect = new DataBaseConnect();
                 timer = new Timer();
-                timer.Interval = TimeSpan.FromMinutes(10).TotalMilliseconds;      
+                timer.Interval = TimeSpan.FromMinutes(0.2).TotalMilliseconds;      
                 timer.Elapsed +=  (sender, e) =>
                 databaseConnect.ConnectAndChangeCouponsLocations(); 
                 timer.Start(); 

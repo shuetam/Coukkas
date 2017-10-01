@@ -20,9 +20,7 @@ namespace Coukkas.Infrastructure.Services
         {
             _fenceRepository = fenceRepository;
             _userRepository = userRepository;
-            _autoMapper = autoMapper;
-
-             
+            _autoMapper = autoMapper; 
         }
 
         public async Task <List<CouponDto>> GetAvailableCouponsAsync(Guid UserId)
@@ -39,7 +37,7 @@ namespace Coukkas.Infrastructure.Services
                 (c => c.location.GetDistanceTo(location)<2));
             }
 
-           return _autoMapper.Map<List<CouponDto>>(coupons);
+           return  coupons.Select(x => _autoMapper.Map<CouponDto>(x)).ToList();
         }
 
         public async Task CatchCoukka(Guid UserId, int couponIndex)
@@ -58,6 +56,8 @@ namespace Coukkas.Infrastructure.Services
 
             var coupon = coupons[couponIndex];
             coupon.Catch(user);
+            await  _userRepository.UpdateAsync(user);
+            await _fenceRepository.UpdateAsync(avaibleFences.SingleOrDefault(x=>x.Id==coupon.FenceId));
         }
     }
 }

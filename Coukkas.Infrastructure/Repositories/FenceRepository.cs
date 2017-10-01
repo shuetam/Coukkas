@@ -47,26 +47,30 @@ namespace Coukkas.Infrastructure
             }
         }
 
-        public async Task<Dictionary<string, double>> GetNotAvailableAsync (Location location) 
+
+         public async Task<Dictionary<string, double>> GetNotAvailableAsync (Location location) 
         {
-        return await _context.Fences.Where
+        return await _context.Fences.Include(x=>x.location)
+        .Where
         (f => f.Radius<location.GetDistanceTo(f.location)).ToDictionaryAsync
         (f=>f.Name,f=>f.location.GetDistanceTo(location));
         }
          
          public async Task<List<Fence>> GetAvailableAsync (Location location) 
         {
-        return await _context.Fences.Include(x=>x.Coupons).ThenInclude(z=>z.location).Where
+        return await _context.Fences.Include(x=>x.location).Include(x=>x.Coupons).ThenInclude(z=>z.location)
+        .Where
         (f => f.Radius>=location.GetDistanceTo(f.location)).ToListAsync();
         }    
         
+
         public async Task UpdateAsync(Fence fence)
         {
             _context.Update(fence);
             await _context.SaveChangesAsync();
         }
-        public async Task <IEnumerable<Fence>> GetAsyncByOwner(Guid OwnerId)
-            => await _context.Fences.Include(x=>x.Coupons).Where(f => f.OwnerID == OwnerId).ToListAsync();
+        public async Task <List<Fence>> GetAsyncByOwner(Guid OwnerId)
+            => await _context.Fences.Include(x=>x.location).Include(x=>x.Coupons).ThenInclude(x=>x.location).Where(f => f.OwnerID == OwnerId).ToListAsync();
 
       
            

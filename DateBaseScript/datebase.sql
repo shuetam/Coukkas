@@ -124,7 +124,7 @@ join Locations on Coupons.LocationID = Locations.ID WHERE COUPONS.UserID is NULL
 
 
 update Locations
-set Latitude=34, Longitude=43 where id>1
+set Latitude=34, Longitude=43 where id>70
 
 
 

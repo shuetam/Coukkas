@@ -14,7 +14,7 @@ namespace Tests
 {
     public class ServicesTests
     {
-        [Fact]
+        /* [Fact]
         public async Task When_user_asks_for_fences_that_are_out_of_his_location_should_get_a_dictionary_with_their_names_and_distance_to_them()
         {
             //Arrange
@@ -39,16 +39,13 @@ namespace Tests
 
             //Act
             var fenceService = new FenceService(fenceRepositoryMock.Object, userRepositoryMock.Object , mapperMock.Object);
-            var userService = new UserService(userRepositoryMock.Object,  mapperMock.Object, tokenMock.Object);
+          //  var userService = new UserService(userRepositoryMock.Object,  mapperMock.Object, tokenMock.Object);
             var dicionaryfromservice = await fenceService.GetNotAvailableAsync(user.Id);
 
 
             //Assert
             dicionaryfromservice.Should().BeSameAs(dicionary);
-
-
-
-        }
+        } */
 
     }
 

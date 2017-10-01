@@ -28,11 +28,27 @@ namespace Coukkas.Core.Domain
         {
             this.Id = Id;
             Role = role;
-            Name = name;
+            SetLogin(name);
             Email = email;
-            Password = password;
+            SetPassword(password);
             CreatedAt = DateTime.UtcNow;
             this.Location = new Location();
+        }
+
+        private void SetLogin(string login)
+        {
+            if(login.IsLoginMatch())
+            {this.Name = login;}
+            else 
+            {throw new Exception("Wrong login format");}
+        }
+
+        private void SetPassword(string password)
+        {
+            if(password.IsPasswordMatch())
+            {this.Password = password;}
+            else 
+            {throw new Exception("Wrong password format");}
         }
 
         public void SetLocation(double lat, double lon)
