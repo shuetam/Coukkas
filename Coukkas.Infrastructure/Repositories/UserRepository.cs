@@ -37,13 +37,11 @@ namespace Coukkas.Infrastructure
 
         public async Task DeleteAsync(User user)
         {
-
           var user1 = await GetAsync(user.Id);
             _context.Users.Remove(user1);
             await _context.SaveChangesAsync();
         }
 
-      
         public async Task UpdateAsync(User user)
         {
             _context.Update(user);

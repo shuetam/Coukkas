@@ -29,7 +29,7 @@ namespace Coukkas.Core.Domain
             this.Id = Id;
             Role = role;
             SetLogin(name);
-            Email = email;
+            SetEmail(email);
             SetPassword(password);
             CreatedAt = DateTime.UtcNow;
             this.Location = new Location();
@@ -41,6 +41,14 @@ namespace Coukkas.Core.Domain
             {this.Name = login;}
             else 
             {throw new Exception("Wrong login format");}
+        }
+
+            private void SetEmail(string email)
+        {
+            if(email.IsEmailMatch())
+            {this.Email = email;}
+            else 
+            {throw new Exception("Wrong email format");}
         }
 
         private void SetPassword(string password)

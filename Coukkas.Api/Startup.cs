@@ -59,10 +59,12 @@ namespace Coukkas.Api
             services.AddSingleton(AutoMapperConfig.Initialize());
             
         
-            services.AddSingleton(Configuration.GetSection("Jwt").Get<TokenParameters>()); 
+            services.AddSingleton(Configuration.GetSection("Jwt").Get<TokenParameters>());
             services.AddAuthorization();
            
             var connectionString = Configuration.GetSection("SqlConnecting").Get<SqlConnectingSettings>().ConnectionString; 
+         
+  
             services.AddDbContext<CoukkasContext>(options => options.UseSqlServer(connectionString));
             
 

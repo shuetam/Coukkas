@@ -71,5 +71,17 @@ namespace Coukkas.Api.Controllers
             await _fenceService.AddCoupons(command.FenceId, command.Discount, command.amount, command.EndOfValidity);
             return Created("/coupon", null);
         }
+
+        [HttpDelete("delete_fence/{fenceID}")]
+        [Authorize]
+        public async Task <IActionResult> DeleteFence([FromRoute] Guid fenceID)
+        {
+            var fences = await _fenceService.GetByOwnerAsync(UserId);
+            
+            await _fenceService.DeleteAsync(fences.Single(f => f.Id==fenceID).Id);
+            return NoContent();
+
+
+        }
     }
 }

@@ -47,7 +47,6 @@ namespace Coukkas.Infrastructure
             }
         }
 
-
          public async Task<Dictionary<string, double>> GetNotAvailableAsync (Location location) 
         {
         return await _context.Fences.Include(x=>x.location)
@@ -63,7 +62,6 @@ namespace Coukkas.Infrastructure
         (f => f.Radius>=location.GetDistanceTo(f.location)).ToListAsync();
         }    
         
-
         public async Task UpdateAsync(Fence fence)
         {
             _context.Update(fence);
