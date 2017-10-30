@@ -53,10 +53,10 @@ namespace Coukkas.Core.Domain
 
         private void SetPassword(string password)
         {
-            if(password.IsPasswordMatch())
-            {this.Password = password;}
-            else 
-            {throw new Exception("Wrong password format");}
+      
+            this.Password = password;
+        
+        
         }
 
         public void SetLocation(double lat, double lon)

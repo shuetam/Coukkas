@@ -35,9 +35,10 @@ public Location()
 
             var c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
             var d = R * c;
-            return d;
-                
+            return d;        
     }
+
+ 
 
     }
 }

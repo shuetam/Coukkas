@@ -10,6 +10,7 @@ namespace Coukkas.Infrastructure.Services
     public interface IUserService
     {
        Task <AccountDto> GetAccountAsync(Guid Id);
+       Task <List<AccountDto>> GetAllAccountsAsync();
        Task RegisterAsync (Guid Id, string email, string name, string password, string role);
        Task <TokenDto> LoginAsync  (string email, string password);
        Task SetLocation(Guid UserID, double lat, double lon);

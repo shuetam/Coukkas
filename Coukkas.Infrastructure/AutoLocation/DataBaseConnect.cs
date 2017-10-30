@@ -15,7 +15,7 @@ public class DataBaseConnect
  
  public string connectionString = "Server=localhost; User Id=sa; Password=P@$$w0rd;Database=CoukkasDatabase";
 
- //string connectionString = "Server=MATEUSZ-PC; User Id=Mateusz1;Password=mateusz1;Database=dydaktyka";
+ // public string connectionString = "Server=MATEUSZ-PC; User Id=Mateusz1;Password=mateusz1;Database=dydaktyka";
 
 public  string fenceCommand = "select Fences.ID, Radius, Latitude, Longitude from Fences Join Locations on Fences.LocationID = Locations.ID";
 

@@ -8,6 +8,7 @@ namespace Coukkas.Core
     public interface IUserRepository
     {
         Task <User> GetAsync(Guid UserID);
+        Task <List<User>> GetAllAsync();
         Task <User> GetAsync(string UserEmail);
         Task AddAsync (User user);
         Task DeleteAsync (User user);

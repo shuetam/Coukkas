@@ -20,6 +20,11 @@ namespace Coukkas.Infrastructure
         {
             _context = context;
         }
+
+        public async Task <List<User>> GetAllAsync()
+        {
+            return await _context.Users.Where(user => user.Role != ".").ToListAsync();
+        }
         public async Task<User> GetAsync(Guid UserID)
         {
             return await _context.Users.Include(x=>x.Location).SingleOrDefaultAsync(x=> x.Id == UserID);

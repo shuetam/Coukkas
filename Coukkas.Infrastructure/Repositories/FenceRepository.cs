@@ -60,6 +60,7 @@ namespace Coukkas.Infrastructure
         return await _context.Fences.Include(x=>x.location).Include(x=>x.Coupons).ThenInclude(z=>z.location)
         .Where
         (f => f.Radius>=location.GetDistanceTo(f.location)).ToListAsync();
+        
         }    
         
         public async Task UpdateAsync(Fence fence)

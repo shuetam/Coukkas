@@ -17,6 +17,8 @@ namespace Coukkas.Infrastructure.Services
       private readonly IMapper _autoMapper;
       private readonly ITokenHandler _tokenHandler;
    // public Timer timer;
+
+
             public UserService(IUserRepository userrepository, IMapper autoMapper, ITokenHandler tokenHandler, IFenceRepository fenceRepository)
             {
                 _userRepository = userrepository;
@@ -24,6 +26,13 @@ namespace Coukkas.Infrastructure.Services
                 _tokenHandler = tokenHandler;
                 _fenceRepository = fenceRepository;
             }
+
+      public async  Task <List<AccountDto>> GetAllAccountsAsync()
+        {
+
+              var users = await _userRepository.GetAllAsync();
+               return _autoMapper.Map<List<AccountDto>>(users);
+        }
 
         public async Task RegisterAsync(Guid Id, string email, string name, string password, string role)
         {

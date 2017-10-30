@@ -28,6 +28,8 @@ using Coukkas.Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System.Timers;
 
+
+
 // "ConnectionString": "Server=MATEUSZ-PC; User Id=Mateusz1;Password=mateusz1;Database=dydaktyka",
 // "ConnectionString": "Server=localhost; User Id=sa;Password=P@$$w0rd;Database=CoukkasDatabase",
 
@@ -57,6 +59,7 @@ namespace Coukkas.Api
             services.AddScoped<IFenceService, FenceService>();
             services.AddScoped<ICouponService, CouponService>();
             services.AddSingleton(AutoMapperConfig.Initialize());
+            services.AddCors();
             
         
             services.AddSingleton(Configuration.GetSection("Jwt").Get<TokenParameters>());
@@ -111,6 +114,7 @@ namespace Coukkas.Api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime appLifeTime)
         {
+            app.UseCors(options =>   options.WithOrigins("http://localhost:5000").AllowAnyMethod()); // allow methods from angular port
            
             if (env.IsDevelopment())
             {
@@ -119,6 +123,7 @@ namespace Coukkas.Api
             app.UseAuthentication();
             app.UseMvc();
             appLifeTime.ApplicationStopped.Register(() => Container.Dispose()); // cleaning container when app stop
+
 
         }
     }

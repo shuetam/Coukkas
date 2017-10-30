@@ -22,11 +22,20 @@ namespace Coukkas.Api.Controllers
             _userService = userService;
         }
 
+         [HttpGet("allusers")]
+        public async Task <IActionResult> GetAllUsers()
+        {
+           return Json( await _userService.GetAllAccountsAsync());
+        } 
+
+
         [HttpPost("register")]
         public async Task <IActionResult> Register([FromBody] UserRegister user)
         {
            await _userService.RegisterAsync(Guid.NewGuid(), user.Email, user.Name, user.Password, user.Role);
            return Created($"/account/{user.Name}", null);
+      //    return Json(user);
+      
         } 
 
         [HttpPost("login")]
