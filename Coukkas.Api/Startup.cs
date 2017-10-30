@@ -114,7 +114,7 @@ namespace Coukkas.Api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime appLifeTime)
         {
-            app.UseCors(options =>   options.WithOrigins("http://localhost:5000").AllowAnyMethod()); // allow methods from angular port
+            app.UseCors(options => options.WithOrigins("http://localhost:5000").AllowAnyMethod()); // allow all methods on my api port
            
             if (env.IsDevelopment())
             {
