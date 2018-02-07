@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using Coukkas.Core.Domain;
 
@@ -15,6 +16,9 @@ namespace Coukkas.Core
        Task DeleteAsync (Fence fence);
        Task UpdateAsync (Fence fence);
        Task UpdateAllAsync();
+       Task <List<Fence>> GetAllFancesAsync();
+       Task <MemoryStream> fileStreamResult(int id);
+       
     }
 }
     

@@ -12,8 +12,8 @@ namespace Coukkas.Api.Controllers
     
     public class ValuesController : Controller
     {
-    protected Guid UserId
-    {
+        protected Guid UserId
+        {
         get
         { 
         if (User.Identity.IsAuthenticated)

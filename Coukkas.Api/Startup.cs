@@ -27,6 +27,8 @@ using Coukkas.Infrastructure.EntityFramework;
 using Coukkas.Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System.Timers;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 
 
 

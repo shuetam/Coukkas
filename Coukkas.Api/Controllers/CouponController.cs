@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Coukkas.Infrastructure.FromBodyCommands;
 using Coukkas.Core.Domain;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Http;
 
 namespace Coukkas.Api.Controllers
 {
@@ -47,5 +48,7 @@ namespace Coukkas.Api.Controllers
             await _couponService.CatchCoukka(UserId, couponIndex);
             return NoContent();
         }
+
+
     }
 }

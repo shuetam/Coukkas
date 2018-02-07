@@ -47,9 +47,6 @@ List<CouponSql> Coupons = new List<CouponSql>();
          Coupons.Clear();
  }
 
-
-
-
     public void EditLocations(CouponSql coupon)
     {
         try

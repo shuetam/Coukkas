@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using Coukkas.Core.Domain;
 using Coukkas.Infrastructure.Repositories.DTOS;
@@ -12,10 +13,12 @@ namespace Coukkas.Infrastructure.Services
                         DateTime StartDate, DateTime EndDate, double lat, double lan, double Rad); 
         Task <FenceDto> GetAsync (Guid Id);
         Task<List<FenceDto>> GetAvailableAsync (Guid UserId);
+         Task<List<FenceDto>> GetAllAsync ();
         Task<List<Fence>> GetByOwnerAsync (Guid OwnerId);
         
         Task AddCoupons (Guid FenceId, double discount, int amount, DateTime end);
         Task<Dictionary<string, double>> GetNotAvailableAsync (Guid UserId);
         Task DeleteAsync(Guid Id);
+        Task<MemoryStream> GetImage(int id);
     }
 }

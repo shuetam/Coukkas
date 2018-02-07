@@ -14,9 +14,12 @@ namespace Coukkas.Infrastructure.EntityFramework
        public DbSet<Location> Locations {get; set;}
        public DbSet<Fence> Fences {get; set;}
        public DbSet<Coupon> Coupons {get; set;}
+        public DbSet<Images> Images {get; set;}
 
         private readonly SqlConnectingSettings _sqlSettings;
         
+
+
         public CoukkasContext(DbContextOptions<CoukkasContext> options, SqlConnectingSettings SqlSettings) : base(options)
         {
             _sqlSettings = SqlSettings;

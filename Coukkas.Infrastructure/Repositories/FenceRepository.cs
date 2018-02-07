@@ -6,6 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Coukkas.Infrastructure.EntityFramework;
 using Microsoft.EntityFrameworkCore;
+using System.IO;
+
+
 
 namespace Coukkas.Infrastructure
 {
@@ -71,8 +74,16 @@ namespace Coukkas.Infrastructure
         public async Task <List<Fence>> GetAsyncByOwner(Guid OwnerId)
             => await _context.Fences.Include(x=>x.location).Include(x=>x.Coupons).ThenInclude(x=>x.location).Where(f => f.OwnerID == OwnerId).ToListAsync();
 
-      
-           
-        
+        public async Task<List<Fence>> GetAllFancesAsync()
+        => await _context.Fences.ToListAsync();
+
+public async Task<MemoryStream> fileStreamResult(int id)
+{
+        var image = await _context.Images.Where(x => x.ID == id).SingleAsync();
+ 
+         return new MemoryStream(image.Data); 
+   
+}
+            
     }
 }

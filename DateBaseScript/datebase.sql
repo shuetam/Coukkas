@@ -25,6 +25,14 @@ CreatedAt DATE NOT NULL,
 );
 
 
+sudo docker run -e 'ACCEPT_EULA=Y' -e 'MSSQL_SA_PASSWORD=sqlpassword' \
+   -p 1433:1433 --name sql2 \
+   -d microsoft/mssql-server-linux:2017-latest
+
+
+765d456bc8a863c2be119daf6d183720f1b65f9b7e66e841fc37bd4e16d0735d
+
+
 CREATE TABLE Locations
 (
 ID INT IDENTITY(1,1) PRIMARY KEY NOT NULL,

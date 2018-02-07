@@ -51,6 +51,7 @@ namespace Coukkas.Api.Controllers
            return Json( await _userService.GetAccountAsync(UserId));
         } 
 
+
         [HttpPost("location")]
         [Authorize]
         public async Task <IActionResult> SetUserLocation([FromBody] LocationSetter location)

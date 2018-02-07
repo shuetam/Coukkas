@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
@@ -70,6 +71,16 @@ namespace Coukkas.Infrastructure.Services
             var fences = await _fenceRepository.GetNotAvailableAsync(user.Location);
             return fences;
         }
+
+        public async Task<List<FenceDto>> GetAllAsync()
+        {
+            var allFences = await _fenceRepository.GetAllFancesAsync();
+            return  allFences.Select(f => _autoMapper.Map<FenceDto>(f)).ToList();
+        }
+
+
+        public async Task<MemoryStream> GetImage(int id) => await _fenceRepository.fileStreamResult(id);
+
     }
 }
       

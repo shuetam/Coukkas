@@ -53,12 +53,10 @@ namespace Coukkas.Core.Domain
 
         private void SetPassword(string password)
         {
-      
             this.Password = password;
-        
-        
         }
-
+      
+            
         public void SetLocation(double lat, double lon)
         {   
             this.Location.Latitude = lat;
@@ -68,8 +66,12 @@ namespace Coukkas.Core.Domain
         public void AddCatchedCoupon(Coupon coupon)
         {
             _coupons.Add(coupon);
+
+            
         }
     }
 }
+        
+
 
             
