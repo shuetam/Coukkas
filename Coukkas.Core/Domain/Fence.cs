@@ -15,13 +15,17 @@ namespace Coukkas.Core.Domain
         public Location location{get; protected set;}
         public double Radius {get; protected set;}
         public Guid OwnerID {get; protected set;}
+
+        public string Category {get; protected set;}
         
         public List<Coupon> Coupons {get; protected set;}
-         
+        
+
         protected Fence()
         {}
 
-        public Fence (Guid Id, Guid OwnerId, string Name, string Description, DateTime CreatedAt, DateTime EndDate, double lat, double lon, double Radius)
+        public Fence (Guid Id, Guid OwnerId, string Name, string Description,  string Category, 
+        DateTime CreatedAt, DateTime EndDate, double lat, double lon, double Radius)
         {
             this.Id = Id;
             this.OwnerID = OwnerId;
@@ -31,16 +35,23 @@ namespace Coukkas.Core.Domain
             this.EndDate = EndDate;
             this.location = new Location(lat, lon);
             this.Radius = Radius;
+            if (Categories.Names.Contains(Category))
+            {
+            this.Category = Category;
+            }
+            else
+            {
+              this.Category = "undefined";   
+            }
            
         }
         
-        public void AddCoupons (int amount, double discount, DateTime end)
+        public void AddCoupons (int amount)
         {
             for(int i = 0;i<amount;i++)
             {
-                Coupons.Add(new Coupon(Guid.NewGuid(), this.Id, discount, end,this));
+                Coupons.Add(new Coupon(Guid.NewGuid(),this));
             }
         }
-
     }
 } 

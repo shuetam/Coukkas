@@ -9,16 +9,16 @@ namespace Coukkas.Infrastructure.Services
 {
     public interface IFenceService
     {
-        Task CreateAsync (Guid ID, Guid OwnerId, string Name, string Description, 
-                        DateTime StartDate, DateTime EndDate, double lat, double lan, double Rad); 
-        Task <FenceDto> GetAsync (Guid Id);
+       /*  Task CreateAsync (Guid ID, Guid OwnerId, string Name, string Description, string Category, 
+                        DateTime StartDate, DateTime EndDate, double lat, double lan, double Radius); */        Task <FenceDto> GetAsync (Guid Id);
         Task<List<FenceDto>> GetAvailableAsync (Guid UserId);
-         Task<List<FenceDto>> GetAllAsync ();
+         Task<List<FenceData>> GetAllAsync ();
         Task<List<Fence>> GetByOwnerAsync (Guid OwnerId);
         
-        Task AddCoupons (Guid FenceId, double discount, int amount, DateTime end);
+        Task AddCoupons (Guid FenceId,  int amount);
         Task<Dictionary<string, double>> GetNotAvailableAsync (Guid UserId);
         Task DeleteAsync(Guid Id);
         Task<MemoryStream> GetImage(int id);
+        Task CreateAsync(Guid fenceID, Guid userId, string name, string description, string _category, DateTime utcNow, DateTime dateTime, double lat, double lon, double radius);
     }
 }

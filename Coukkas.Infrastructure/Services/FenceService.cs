@@ -26,18 +26,11 @@ namespace Coukkas.Infrastructure.Services
             _autoMapper = autoMapper;
         }
 
-        public async Task AddCoupons(Guid FenceId, double discount, int amount, DateTime end)
+        public async Task AddCoupons(Guid FenceId,  int amount)
         {
             var fence = await _fenceRepository.GetAsync(FenceId);
-            fence.AddCoupons(amount, discount, end);
+            fence.AddCoupons(amount);
             await _fenceRepository.UpdateAsync(fence); 
-
-
-        }
-
-        public async Task CreateAsync(Guid ID, Guid OwnerId, string Name, string Description, DateTime StartDate, DateTime EndDate, double lat, double lan, double Rad)
-        {
-            await _fenceRepository.AddAsync(new Fence(ID, OwnerId, Name, Description, StartDate, EndDate, lat, lan, Rad));
         }
 
         public async Task DeleteAsync(Guid Id)
@@ -50,12 +43,12 @@ namespace Coukkas.Infrastructure.Services
         {
          var fen = await _fenceRepository.GetAsync(Id);
          return  _autoMapper.Map<FenceDto>(fen);
-         
         }
+        
         public async Task<List<Fence>> GetByOwnerAsync(Guid OwnerId)
         {
             var fences = await _fenceRepository.GetAsyncByOwner(OwnerId);
-            return fences.ToList();
+            return fences;
         }
 
         public async Task<List<FenceDto>> GetAvailableAsync(Guid UserId)
@@ -72,15 +65,24 @@ namespace Coukkas.Infrastructure.Services
             return fences;
         }
 
-        public async Task<List<FenceDto>> GetAllAsync()
+        public async Task<List<FenceData>> GetAllAsync()
         {
-            var allFences = await _fenceRepository.GetAllFancesAsync();
-            return  allFences.Select(f => _autoMapper.Map<FenceDto>(f)).ToList();
+            var allFences = await _fenceRepository.GetAllFencesAsync();
+            return  allFences.Select(f => _autoMapper.Map<FenceData>(f)).ToList();
         }
+
+       
+
 
 
         public async Task<MemoryStream> GetImage(int id) => await _fenceRepository.fileStreamResult(id);
 
+      
+          public async Task CreateAsync(Guid ID, Guid OwnerId, string Name, string Description, string _category,
+        DateTime StartDate, DateTime EndDate, double lat, double lan, double Radius)
+        {
+            await _fenceRepository.AddAsync(new Fence(ID, OwnerId, Name, Description, _category, StartDate, EndDate, lat, lan, Radius));
+        }
     }
 }
       

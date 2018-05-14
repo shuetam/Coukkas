@@ -14,6 +14,7 @@ namespace Coukkas.Infrastructure.Services
        Task RegisterAsync (Guid Id, string email, string name, string password, string role);
        Task <TokenDto> LoginAsync  (string email, string password);
        Task SetLocation(Guid UserID, double lat, double lon);
-       
+        Task <List<FactTryCatchCoupon>> GetTryFacts(int year, int first , int last);
+        Task FillRandomFacts(int i);
     }
 }

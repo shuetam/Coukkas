@@ -77,5 +77,17 @@ namespace Coukkas.Infrastructure.Services
         await _userRepository.UpdateAsync(user);
         
         }
+
+        public async Task <List<FactTryCatchCoupon>> GetTryFacts(int year, int first , int last)
+        {
+           var facts = await _userRepository.GetTryFacts(year, first , last);
+           return facts;
+        }
+
+
+        public async Task FillRandomFacts(int i)
+        {
+           await  _userRepository.FillRandomFacts(i);
+        }
     }
 }

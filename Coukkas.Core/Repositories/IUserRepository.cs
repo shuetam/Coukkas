@@ -13,7 +13,10 @@ namespace Coukkas.Core
         Task AddAsync (User user);
         Task DeleteAsync (User user);
         Task UpdateAsync (User user);
-      
+        Task <List<FactTryCatchCoupon>> GetTryFacts(int year, int first , int last);
+        Task FillRandomFacts(int i);
+     
+
     }
 }
 

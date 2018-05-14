@@ -10,6 +10,7 @@ using Coukkas.Infrastructure.Repositories.DTOS;
 using Microsoft.AspNetCore.Authorization;
 using Coukkas.Infrastructure.FromBodyCommands;
 using Coukkas.Core.Domain;
+using Microsoft.Extensions.Configuration;
 
 namespace Coukkas.Api.Controllers
 {
@@ -17,9 +18,13 @@ namespace Coukkas.Api.Controllers
     public class AccountController : ValuesController
     {
         private readonly  IUserService _userService;
-        public AccountController (IUserService userService)
+        
+
+
+        public AccountController (IUserService userService, IConfiguration config)
         {
             _userService = userService;
+            
         }
 
          [HttpGet("allusers")]
@@ -59,5 +64,13 @@ namespace Coukkas.Api.Controllers
            await _userService.SetLocation(this.UserId, location.Latitude, location.Longitude);
            return Created($"/account/{UserId}/location", null);
         } 
+
+        [HttpGet("factsdata_year={year}_days={first}-{last}")]
+        public async Task<IActionResult> GetTryFacts(int year, int first , int last)
+        {
+           var facts =  await _userService.GetTryFacts(year, first, last);
+           return Json(facts);
+        }
+        
     }
 }

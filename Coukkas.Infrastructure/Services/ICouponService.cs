@@ -10,5 +10,7 @@ namespace Coukkas.Infrastructure.Services
     {
         Task <List<CouponDto>> GetAvailableCouponsAsync (Guid UserId);
          Task CatchCoukka(Guid UserId, int couponIndex);
+         Task <List <CouponsData>> GetAllCouponsAsync();
+          Task<string> TryCatchCoukka(Guid UserId, Guid FenceID);
     }
 }

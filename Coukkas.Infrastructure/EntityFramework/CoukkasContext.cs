@@ -10,15 +10,14 @@ namespace Coukkas.Infrastructure.EntityFramework
     public class CoukkasContext : DbContext
     {
 
-        public DbSet<User> Users {get; set;}
-       public DbSet<Location> Locations {get; set;}
-       public DbSet<Fence> Fences {get; set;}
-       public DbSet<Coupon> Coupons {get; set;}
-        public DbSet<Images> Images {get; set;}
+        public DbSet<User> Users { get; set; }
+        public DbSet<Location> Locations { get; set; }
+        public DbSet<Fence> Fences { get; set; }
+        public DbSet<Coupon> Coupons { get; set; }
+        public DbSet<Images> Images { get; set; }
+        public DbSet<FactTryCatchCoupon> FactTryCatchCoupons {get; set;}
 
         private readonly SqlConnectingSettings _sqlSettings;
-        
-
 
         public CoukkasContext(DbContextOptions<CoukkasContext> options, SqlConnectingSettings SqlSettings) : base(options)
         {
@@ -32,17 +31,9 @@ namespace Coukkas.Infrastructure.EntityFramework
                 optionsBuilder.UseInMemoryDatabase();
                 return;
             }
-           
+
             optionsBuilder.UseSqlServer(_sqlSettings.ConnectionString);
         }
 
-           
-           
-           
-            
-        
-            
-
-        
     }
 }

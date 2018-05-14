@@ -63,7 +63,6 @@ namespace Coukkas.Infrastructure
         return await _context.Fences.Include(x=>x.location).Include(x=>x.Coupons).ThenInclude(z=>z.location)
         .Where
         (f => f.Radius>=location.GetDistanceTo(f.location)).ToListAsync();
-        
         }    
         
         public async Task UpdateAsync(Fence fence)
@@ -72,18 +71,29 @@ namespace Coukkas.Infrastructure
             await _context.SaveChangesAsync();
         }
         public async Task <List<Fence>> GetAsyncByOwner(Guid OwnerId)
-            => await _context.Fences.Include(x=>x.location).Include(x=>x.Coupons).ThenInclude(x=>x.location).Where(f => f.OwnerID == OwnerId).ToListAsync();
+            => await _context.Fences
+            .Where(f => f.OwnerID == OwnerId)
+            .Include(x=>x.location)
+            .Include(f => f.Coupons).ThenInclude(c => c.location)
+            .ToListAsync();
 
-        public async Task<List<Fence>> GetAllFancesAsync()
-        => await _context.Fences.ToListAsync();
+        public async Task<List<Fence>> GetAllFencesAsync()
+        => await _context.Fences.Include(x=>x.location).ToListAsync();
 
-public async Task<MemoryStream> fileStreamResult(int id)
-{
+        public async Task<List<Coupon>> GetAllCouponsAsync()
+        => await _context.Coupons.Include(x=>x.location).Include(x=>x.fence).ToListAsync();
+
+          public async Task TryFact (Location location, Fence fence) 
+        {
+         await _context.FactTryCatchCoupons.AddAsync(new FactTryCatchCoupon(DateTime.UtcNow, location, fence.Category)); // better send location
+         await _context.SaveChangesAsync();
+        }
+
+        public async Task<MemoryStream> fileStreamResult(int id)
+        {
         var image = await _context.Images.Where(x => x.ID == id).SingleAsync();
  
          return new MemoryStream(image.Data); 
-   
-}
-            
+        }      
     }
 }

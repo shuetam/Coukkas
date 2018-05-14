@@ -29,11 +29,12 @@ using Microsoft.EntityFrameworkCore;
 using System.Timers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using System.Web.Http;
 
 
 
 // "ConnectionString": "Server=MATEUSZ-PC; User Id=Mateusz1;Password=mateusz1;Database=dydaktyka",
-// "ConnectionString": "Server=localhost; User Id=sa;Password=P@$$w0rd;Database=CoukkasDatabase",
+// "ConnectionString": "Server=localhost; User Id=sa;Password=SQLServerP@ssw0rd1;Database=CoukkasDatabase",
 
 namespace Coukkas.Api
 {
@@ -43,7 +44,9 @@ namespace Coukkas.Api
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration; 
+      
         }
+
         
 
         public IConfiguration Configuration { get; }
@@ -54,6 +57,8 @@ namespace Coukkas.Api
         {
             services.AddMvc()
             .AddJsonOptions(j => j.SerializerSettings.Formatting = Formatting.Indented);
+            services.AddMvc().AddJsonOptions(j => j.SerializerSettings.ReferenceLoopHandling 
+            = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ITokenHandler, TokenHandler>();
@@ -93,12 +98,13 @@ namespace Coukkas.Api
             };
              });
 
-                var databaseConnect = new DataBaseConnect();
+               /*  var databaseConnect = new DataBaseConnect();
                 timer = new Timer();
                 timer.Interval = TimeSpan.FromMinutes(0.2).TotalMilliseconds;      
                 timer.Elapsed +=  (sender, e) =>
                 databaseConnect.ConnectAndChangeCouponsLocations(); 
-                timer.Start(); 
+                timer.Start();  */
+                
 
 
              var builder = new ContainerBuilder();

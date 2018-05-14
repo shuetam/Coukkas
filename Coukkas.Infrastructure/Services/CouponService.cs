@@ -13,7 +13,7 @@ namespace Coukkas.Infrastructure.Services
     public class CouponService : ICouponService
     {
         private readonly IUserRepository _userRepository;
-        private readonly IFenceRepository _fenceRepository;
+    private readonly IFenceRepository _fenceRepository;
         private readonly IMapper _autoMapper;
       
         public CouponService( IFenceRepository fenceRepository, IUserRepository userRepository, IMapper autoMapper)
@@ -57,7 +57,48 @@ namespace Coukkas.Infrastructure.Services
             var coupon = coupons[couponIndex];
             coupon.Catch(user);
             await  _userRepository.UpdateAsync(user);
-            await _fenceRepository.UpdateAsync(avaibleFences.SingleOrDefault(x=>x.Id==coupon.FenceId));
+            await _fenceRepository.UpdateAsync(avaibleFences.SingleOrDefault(x=>x.Id==coupon.fence.Id));
+        }
+
+         public async Task<string> TryCatchCoukka(Guid UserId, Guid FenceID)
+         {
+            var user = await _userRepository.GetAsync(UserId);
+            var location = user.Location;
+            var avaibleFences = await _fenceRepository.GetAvailableAsync(location);
+            var fence = avaibleFences.SingleOrDefault(f=> f.Id == FenceID);
+            await _fenceRepository.TryFact(location, fence);
+
+             
+            var coupon = (fence.Coupons.Where(x=>!x.Caught).FirstOrDefault
+                (c => c.location.GetDistanceTo(location)<2));
+            
+            if (coupon != null)
+            {
+            coupon.Catch(user);
+            await  _userRepository.UpdateAsync(user);
+           // await _fenceRepository.UpdateAsync(avaibleFences.SingleOrDefault(x=>x.Id==coupon.fence.Id));
+            return $"Congratulations You just got a coupon from {fence.Name}";
+            }
+            else
+            {
+            await  _userRepository.UpdateAsync(user);
+           // await _fenceRepository.UpdateAsync(avaibleFences.SingleOrDefault(x=>x.Id==coupon.fence.Id));
+            return "Sorry :( Change your position or wait until the coupons change theri locations and try again";
+            }
+
+
+         }
+
+
+
+         public async Task <List<CouponsData>> GetAllCouponsAsync()
+        {
+            var allCoupons = await _fenceRepository.GetAllCouponsAsync();
+           return  allCoupons.Select(x => _autoMapper.Map<CouponsData>(x)).ToList();
         }
     }
 }
+
+          
+            
+

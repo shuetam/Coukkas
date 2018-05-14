@@ -7,13 +7,19 @@ using System.Windows;
 using System.Data;
 using System.Data.SqlClient;
 using System.Timers;
+using System.Configuration;
 
 namespace Coukkas.Infrastructure.EntityFramework
 {
 public class DataBaseConnect
 {
+ public string connectionString {get; set;}
+    public DataBaseConnect (string _connectionString)
+    {
+        connectionString = _connectionString;
+    }
  
- public string connectionString = "Server=localhost; User Id=sa; Password=P@$$w0rd;Database=CoukkasDatabase";
+
 
  // public string connectionString = "Server=MATEUSZ-PC; User Id=Mateusz1;Password=mateusz1;Database=dydaktyka";
 

@@ -9,7 +9,7 @@ namespace Coukkas.Infrastructure.Repositories.DTOS
     public class CouponDto
     {
         public Guid Id {get; set;}
-        public double Discount {get; set;}
+    
         public Guid FenceId { get; set;}
     }
 

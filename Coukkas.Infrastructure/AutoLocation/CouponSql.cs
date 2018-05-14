@@ -27,22 +27,36 @@ namespace Coukkas.Infrastructure.EntityFramework
     }
 
 
+
+//  1° of Longitude = 111.41288 * cos(theta) - 0.09350 * cos(3 * theta) + 0.00012 * cos(5 * theta)
+
+
         public void ChangeCouponLocation(FenceSql Fence)
         {
             Random random = new Random();
-            this.Latitude = LocationLottery.Invoke(Fence).ToDegGeo() +  Fence.Latitude;
-            this.Longitude = LocationLottery.Invoke(Fence).ToDegGeo() + Fence.Longitude;
-        }
 
-      private Func <FenceSql, double> LocationLottery = (f) => 
+            double lat = Fence.Latitude.Value.ToRadian();
+
+            double x = DoubleLottery() * Fence.Radius.Value;
+            this.Longitude = x/111111  + Fence.Longitude;    
+
+            double y = Math.Sqrt(Math.Pow(Fence.Radius.Value,2) - Math.Pow(x,2));
+
+           
+
+            this.Latitude = (y * DoubleLottery())/111111*Math.Cos(Fence.Latitude.Value.ToRadian()) + Fence.Latitude;
+            
+        }
+ 
+      private double DoubleLottery()
       {
         Random ran = new Random();
         int w = ran.Next(0,2);
         if (w == 0)
-        {return ran.NextDouble()*f.Radius.Value;}
+        {return ran.NextDouble();}
         else
-        {return ran.NextDouble()*f.Radius.Value * (-1);}
-      };  
+        {return (ran.NextDouble() * (-1));}
+      } 
 
     }
 }

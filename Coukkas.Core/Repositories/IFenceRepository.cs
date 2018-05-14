@@ -16,8 +16,10 @@ namespace Coukkas.Core
        Task DeleteAsync (Fence fence);
        Task UpdateAsync (Fence fence);
        Task UpdateAllAsync();
-       Task <List<Fence>> GetAllFancesAsync();
+       Task <List<Fence>> GetAllFencesAsync();
+       Task<List<Coupon>> GetAllCouponsAsync();
        Task <MemoryStream> fileStreamResult(int id);
+        Task TryFact(Location location, Fence fence);
        
     }
 }

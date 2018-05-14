@@ -39,14 +39,26 @@ namespace Coukkas.Api.Controllers
 
         [HttpPost("create")]
         [Authorize]
-        
         public async Task <IActionResult> CreateFence([FromBody] FenceCreated fence)
         {
             Guid fenceID = Guid.NewGuid();
-         await _fenceService.CreateAsync
-         (fenceID, UserId, fence.Name,fence.Description,DateTime.UtcNow, DateTime.UtcNow.AddDays(fence.Days), fence.lat, fence.lon, fence.Radius);
+         await _fenceService.CreateAsync(fenceID, UserId, fence.Name, fence.Description, fence.Category, DateTime.UtcNow, DateTime.UtcNow.AddDays(fence.Days), fence.lat, fence.lon, fence.Radius);
            return Created($"fences/{fenceID}", null);
         } 
+
+
+        [HttpPost("createmany")]
+        [Authorize]
+        public async Task <IActionResult> CreateFence([FromBody] List <FenceCreated> fences)
+        {
+            foreach(var fence in fences)
+            {
+            Guid fenceID = Guid.NewGuid();
+            await _fenceService.CreateAsync(fenceID, UserId, fence.Name, fence.Description, fence.Category, DateTime.UtcNow, DateTime.UtcNow.AddDays(fence.Days), fence.lat, fence.lon, fence.Radius);
+            }
+            return Created($"fences/many", null);
+        } 
+
         
      
         [HttpGet("outfences")]
@@ -57,6 +69,7 @@ namespace Coukkas.Api.Controllers
             return Json(fences);
         }
 
+
         [HttpGet("infences")]
         [Authorize]
         public async Task <IActionResult> GetInFances()
@@ -65,25 +78,24 @@ namespace Coukkas.Api.Controllers
             return Json(fences);
         }
 
+
         [HttpGet("myfences")]
         [Authorize]   
         public async Task <IActionResult> GetFences()
         {   
             var fences = await _fenceService.GetByOwnerAsync(UserId);
            
-             return Json(fences); 
-              
+             return Json(fences);    
         }
 
 
-        [HttpGet("allfences")]
         
+        [HttpGet("alldatafences")]
         public async Task <IActionResult> GetAllFences()
         {   
             var fences = await _fenceService.GetAllAsync();
            
-             return Json(fences); 
-              
+             return Json(fences);    
         }
 
 
@@ -91,7 +103,7 @@ namespace Coukkas.Api.Controllers
         [Authorize]  
         public async Task <IActionResult> AddCoupons([FromBody] CouponCreated command) 
         {
-            await _fenceService.AddCoupons(command.FenceId, command.Discount, command.amount, command.EndOfValidity);
+            await _fenceService.AddCoupons(command.FenceId, command.amount);
             return Created("/coupon", null);
         }
 

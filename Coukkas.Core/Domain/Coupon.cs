@@ -10,10 +10,10 @@ namespace Coukkas.Core.Domain
     public class Coupon : Entity
     {
         
-        public Guid FenceId { get; protected set;}
-       // public Fence Fence { get; set;}
-        public double Discount {get; protected set;}
-        public DateTime EndOfValidity {get; protected set;}
+        //public Guid FenceId { get; protected set;}
+        public Fence fence { get; set;}
+     //   public double Discount {get; protected set;}
+      //  public DateTime EndOfValidity {get; protected set;}
         public Guid? UserId {get; protected set;}
         public Location location {get; protected set;}
         public bool Caught => UserId.HasValue;
@@ -22,13 +22,12 @@ namespace Coukkas.Core.Domain
         protected Coupon()
         {}
 
-        public Coupon(Guid id,  Guid fenceID, double discount, DateTime endOfValidity, Fence fence)
+        public Coupon(Guid id, Fence fence)
         {
             this.Id = id;
-            FenceId = fenceID;
-            Discount = discount;
-            EndOfValidity = endOfValidity;
-           // Fence = fence;
+          //  Discount = discount;
+          //  EndOfValidity = endOfValidity;
+            this.fence = fence;
             this.location = new Location(fence.location.Latitude.Value,fence.location.Longitude.Value);
         }
             

@@ -37,8 +37,5 @@ public Location()
             var d = R * c;
             return d;        
     }
-
- 
-
-    }
+}
 }
