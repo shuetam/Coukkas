@@ -75,8 +75,6 @@ namespace Coukkas.Infrastructure
         {
             var mockFence = new MockFence(12000,50.0646501, 19.9449799);
 
-           
-                
                 var date = new  DateTime(2017,1,1).AddDays(i-1);
                 var random = new Random();
                 var fences_amount = random.Next(40,80);
@@ -99,7 +97,6 @@ namespace Coukkas.Infrastructure
                 }
              
         } 
-
 
     }
 }

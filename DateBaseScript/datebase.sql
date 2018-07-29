@@ -1,6 +1,6 @@
 
 
-
+abbaaa
 
 
 CREATE DATABASE CoukkasDatabase
@@ -23,8 +23,6 @@ Role NVARCHAR(20) NOT NULL,
 LocationID  INT  NULL,
 CreatedAt DATE NOT NULL,
 );
-
-
 
 
 /* 
@@ -56,9 +54,6 @@ VALUES
 (5,34),
 (59,50),
 (50.061509, 19.944035)
-
-
-
 
 
 CREATE TABLE Locations
@@ -159,7 +154,7 @@ SELECT * FROM Coupons
 select * from Fences join Users on Fences.OwnerID = Users.ID
 
 DELETE  from Fences
-where Name = 'Biedronka';
+where Radius > 0
 -----------------------------------------------------------------------
 
 DELETE FROM FactTryCatchCoupons
